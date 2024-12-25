@@ -1,7 +1,7 @@
 {
   "package_name": "com.walturn.my_app",
-  "project_description": "A compact Flutter mobile application demonstrating modular architecture and core mobile development patterns. The app features a startup initialization screen, a home screen with a counter mechanism, and integrated UI components like dialogs and bottom sheets. Key characteristics include localization support, multi-flavor configuration for development and production environments, and a streamlined state management approach showcasing reactive programming principles.",
-  "architecture_overview": "Implemented using the Stacked MVVM architecture, the application enforces a clean separation of concerns through dedicated ViewModels for each view. Dependency injection is managed centrally via GetIt, while routing is handled through a generated router file. The app leverages Stacked services for navigation, dialogs, and bottom sheets, ensuring a decoupled design with clear boundaries between UI rendering and business logic.",
+  "project_description": "A comprehensive medical management Flutter application featuring modular architecture supporting patient, doctor, and medical record management. The app provides full CRUD functionality across patient profiles, doctor registrations, and detailed medical records, with robust state management, responsive design, and centralized data handling. Key features include dynamic form management, interactive list views, delete confirmations, and a structured approach to healthcare data management.",
+  "architecture_overview": "Implemented using Stacked MVVM architecture with a clear separation of concerns. Utilizes repositories for data access, services for business logic, and ViewModels for state management. Dependency injection is managed via GetIt, with centralized routing through generated router files. The application follows a modular design with dedicated components for patients, doctors, and medical records, ensuring extensibility and maintainability.",
   "files": [
     {
       "name": "lib/app/app.dart",
@@ -635,6 +635,916 @@
         "my_app/shared/app_colors.dart",
         "my_app/shared/ui_helpers.dart"
       ]
+    },
+    {
+      "name": "lib/features/doctor/widgets/doctor_list_item.dart",
+      "description": "A reusable widget for displaying detailed doctor information in a list format, providing interactive options for viewing, editing, and deleting doctor profiles within a medical management application",
+      "class_diagram": "@startuml\nclass DoctorListItem {\n  -Doctor doctor\n  -VoidCallback onTap\n  -VoidCallback onEdit\n  -VoidCallback onDelete\n  +Widget build(BuildContext context)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "build",
+          "description": "Constructs a visually structured Card widget displaying comprehensive doctor details with an interactive popup menu for edit/delete actions",
+          "parameters": [
+            "BuildContext context"
+          ],
+          "return_type": "Widget"
+        }
+      ],
+      "dependencies": [
+        "package:flutter/material.dart",
+        "my_app/models/doctor.dart",
+        "my_app/shared/app_colors.dart",
+        "my_app/shared/text_style.dart",
+        "my_app/shared/ui_helpers.dart"
+      ]
+    },
+    {
+      "name": "lib/features/doctor/doctor_repository.dart",
+      "description": "A repository class responsible for managing doctor data operations, providing CRUD functionality for doctor records with in-memory storage simulation",
+      "class_diagram": "@startuml\nclass DoctorRepository {\n  -List<Doctor> _doctors\n  +Future<List<Doctor>> getAllDoctors()\n  +Future<Doctor> getDoctorById(String id)\n  +Future<void> createDoctor(Doctor doctor)\n  +Future<void> updateDoctor(Doctor doctor)\n  +Future<void> deleteDoctor(String id)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "getAllDoctors",
+          "description": "Retrieves the complete list of doctors, serving as a core data access method",
+          "parameters": null,
+          "return_type": "Future<List<Doctor>>"
+        },
+        {
+          "name": "getDoctorById",
+          "description": "Finds and returns a specific doctor by their unique identifier",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<Doctor>"
+        },
+        {
+          "name": "createDoctor",
+          "description": "Adds a new doctor record with validation to prevent duplicate license numbers",
+          "parameters": [
+            "doctor"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "updateDoctor",
+          "description": "Modifies an existing doctor's information by replacing their record",
+          "parameters": [
+            "doctor"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "deleteDoctor",
+          "description": "Removes a doctor record from the repository by their unique identifier",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<void>"
+        }
+      ],
+      "dependencies": [
+        "my_app/models/doctor.dart"
+      ]
+    },
+    {
+      "name": "lib/features/medical_record/medical_record_repository.dart",
+      "description": "A repository for managing medical records, providing CRUD operations and data retrieval for patient medical information with simulated in-memory storage",
+      "class_diagram": "@startuml\nclass MedicalRecordRepository {\n  -List<MedicalRecord> _records\n  +Future<List<MedicalRecord>> getAllMedicalRecords()\n  +Future<List<MedicalRecord>> getMedicalRecordsForPatient(String patientId)\n  +Future<MedicalRecord> getMedicalRecordById(String id)\n  +Future<void> createMedicalRecord(MedicalRecord record)\n  +Future<void> updateMedicalRecord(MedicalRecord record)\n  +Future<void> deleteMedicalRecord(String id)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "getAllMedicalRecords",
+          "description": "Retrieve all medical records from the in-memory storage",
+          "parameters": null,
+          "return_type": "Future<List<MedicalRecord>>"
+        },
+        {
+          "name": "getMedicalRecordsForPatient",
+          "description": "Retrieve medical records specific to a single patient",
+          "parameters": [
+            "patientId"
+          ],
+          "return_type": "Future<List<MedicalRecord>>"
+        },
+        {
+          "name": "getMedicalRecordById",
+          "description": "Retrieve a specific medical record by its unique identifier",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<MedicalRecord>"
+        },
+        {
+          "name": "createMedicalRecord",
+          "description": "Add a new medical record to the in-memory storage",
+          "parameters": [
+            "record"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "updateMedicalRecord",
+          "description": "Update an existing medical record in the in-memory storage",
+          "parameters": [
+            "record"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "deleteMedicalRecord",
+          "description": "Remove a medical record from the in-memory storage",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<void>"
+        }
+      ],
+      "dependencies": [
+        "my_app/models/medical_record.dart"
+      ]
+    },
+    {
+      "name": "lib/features/medical_record/medical_record_viewmodel.dart",
+      "description": "A ViewModel for managing medical records, providing a centralized interface for retrieving, creating, updating, and deleting patient medical records with robust state management and error handling",
+      "class_diagram": "@startuml\nclass MedicalRecordViewModel {\n  - _medicalRecordService: MedicalRecordService\n  - _records: List<MedicalRecord>\n  - _selectedRecord: MedicalRecord\n  + initialize(patientId: String)\n  + loadRecords()\n  + selectRecord(id: String)\n  + createRecord(record: MedicalRecord)\n  + updateRecord(record: MedicalRecord)\n  + deleteRecord(id: String)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "initialize",
+          "description": "Sets the current patient context and loads associated medical records",
+          "parameters": [
+            "patientId"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "loadRecords",
+          "description": "Retrieves medical records for a specific patient or all records",
+          "parameters": null,
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "selectRecord",
+          "description": "Fetches and sets the currently selected medical record by ID",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "createRecord",
+          "description": "Creates a new medical record and refreshes the record list",
+          "parameters": [
+            "record"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "updateRecord",
+          "description": "Updates an existing medical record and refreshes the record list",
+          "parameters": [
+            "record"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "deleteRecord",
+          "description": "Deletes a medical record by ID and refreshes the record list",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<void>"
+        }
+      ],
+      "dependencies": [
+        "stacked/stacked.dart",
+        "my_app/app/app.locator.dart",
+        "my_app/models/medical_record.dart",
+        "my_app/services/medical_record_service.dart"
+      ]
+    },
+    {
+      "name": "lib/features/medical_record/medical_record_view.dart",
+      "description": "Manages the user interface and interactions for viewing, creating, editing, and deleting medical records for a specific patient. Provides a comprehensive medical record management screen with a list view, form modal, and delete confirmation dialog.",
+      "class_diagram": "@startuml\nclass MedicalRecordView {\n  - patientId: String\n  - doctorId: String\n  + builder(context: BuildContext, viewModel: MedicalRecordViewModel): Widget\n  - _buildContent(context: BuildContext, viewModel: MedicalRecordViewModel): Widget\n  - _showMedicalRecordForm(context: BuildContext, viewModel: MedicalRecordViewModel)\n  - _showDeleteConfirmation(context: BuildContext, viewModel: MedicalRecordViewModel, recordId: String)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "builder",
+          "description": "Constructs the main screen layout for medical records with app bar, content area, and floating action button",
+          "parameters": [
+            "BuildContext",
+            "MedicalRecordViewModel",
+            "Widget?"
+          ],
+          "return_type": "Widget"
+        },
+        {
+          "name": "_buildContent",
+          "description": "Renders the list of medical records or displays appropriate messages for empty or error states",
+          "parameters": [
+            "BuildContext",
+            "MedicalRecordViewModel"
+          ],
+          "return_type": "Widget"
+        },
+        {
+          "name": "_showMedicalRecordForm",
+          "description": "Displays a modal bottom sheet for creating or editing a medical record",
+          "parameters": [
+            "BuildContext",
+            "MedicalRecordViewModel",
+            "record"
+          ],
+          "return_type": "void"
+        },
+        {
+          "name": "_showDeleteConfirmation",
+          "description": "Shows a confirmation dialog before deleting a medical record",
+          "parameters": [
+            "BuildContext",
+            "MedicalRecordViewModel",
+            "String"
+          ],
+          "return_type": "void"
+        }
+      ],
+      "dependencies": [
+        "flutter/material.dart",
+        "stacked/stacked.dart",
+        "medical_record_viewmodel.dart",
+        "widgets/medical_record_form.dart",
+        "widgets/medical_record_list_item.dart",
+        "shared/app_colors.dart",
+        "shared/text_style.dart",
+        "shared/ui_helpers.dart"
+      ]
+    },
+    {
+      "name": "lib/features/medical_record/widgets/medical_record_list_item.dart",
+      "description": "A reusable UI component that renders an individual medical record entry with interactive capabilities, enabling users to view, edit, and delete medical history records within a list context",
+      "class_diagram": "@startuml\nclass MedicalRecordListItem {\n  -MedicalRecord record\n  -VoidCallback onTap\n  -VoidCallback onEdit\n  -VoidCallback onDelete\n  +Widget build(BuildContext context)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "build",
+          "description": "Constructs a visually formatted card representing a single medical record with date, diagnosis, treatment, and interaction options",
+          "parameters": [
+            "BuildContext context"
+          ],
+          "return_type": "Widget"
+        }
+      ],
+      "dependencies": [
+        "flutter/material.dart",
+        "models/medical_record.dart",
+        "shared/app_colors.dart",
+        "shared/text_style.dart",
+        "shared/ui_helpers.dart",
+        "intl/intl.dart"
+      ]
+    },
+    {
+      "name": "lib/features/medical_record/widgets/medical_record_form.dart",
+      "description": "A comprehensive medical record form widget for creating and editing patient medical records, enabling doctors to input detailed medical information, diagnosis, treatment, and attach supporting documents.",
+      "class_diagram": "@startuml\nclass MedicalRecordForm {\n  -patientId: String\n  -doctorId: String\n  +onSubmit(MedicalRecord): void\n  +createState(): _MedicalRecordFormState\n}\nclass _MedicalRecordFormState {\n  -_formKey: GlobalKey<FormState>\n  +_submitForm(): void\n  +_pickFiles(): void\n}\n@enduml",
+      "methods": [
+        {
+          "name": "MedicalRecordForm constructor",
+          "description": "Creates a medical record form with optional existing record and required patient/doctor context",
+          "parameters": [
+            "record",
+            "patientId",
+            "doctorId",
+            "onSubmit"
+          ],
+          "return_type": null
+        },
+        {
+          "name": "_submitForm",
+          "description": "Validates form data and creates a new or updates an existing medical record, then triggers submission callback",
+          "parameters": [],
+          "return_type": "void"
+        },
+        {
+          "name": "_pickFiles",
+          "description": "Allows users to select and attach multiple files to the medical record",
+          "parameters": [],
+          "return_type": "Future<void>"
+        }
+      ],
+      "dependencies": [
+        "flutter/material.dart",
+        "models/medical_record.dart",
+        "shared/app_colors.dart",
+        "shared/text_style.dart",
+        "shared/ui_helpers.dart",
+        "file_picker/file_picker.dart"
+      ]
+    },
+    {
+      "name": "lib/features/patient/patient_repository.dart",
+      "description": "A repository class that manages patient data operations, providing CRUD functionality for patient records with an in-memory data storage mechanism. This serves as a data access layer for patient information in a healthcare application.",
+      "class_diagram": "@startuml\nclass PatientRepository {\n  - _patients: List<Patient>\n  + getAllPatients(): Future<List<Patient>>\n  + getPatientById(id: String): Future<Patient>\n  + createPatient(patient: Patient): Future<void>\n  + updatePatient(patient: Patient): Future<void>\n  + deletePatient(id: String): Future<void>\n}\n@enduml",
+      "methods": [
+        {
+          "name": "getAllPatients",
+          "description": "Retrieves all patient records from the in-memory storage",
+          "parameters": null,
+          "return_type": "Future<List<Patient>>"
+        },
+        {
+          "name": "getPatientById",
+          "description": "Fetches a specific patient record by their unique identifier",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<Patient>"
+        },
+        {
+          "name": "createPatient",
+          "description": "Adds a new patient record to the storage",
+          "parameters": [
+            "patient"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "updatePatient",
+          "description": "Modifies an existing patient record",
+          "parameters": [
+            "patient"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "deletePatient",
+          "description": "Removes a patient record from storage by their identifier",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<void>"
+        }
+      ],
+      "dependencies": [
+        "my_app/models/patient.dart"
+      ]
+    },
+    {
+      "name": "lib/features/patient/patient_view.dart",
+      "description": "A Flutter view responsible for managing and displaying a list of patients, providing functionality for creating, updating, deleting, and listing patient records in a medical application",
+      "class_diagram": "@startuml\nclass PatientView {\n  +builder(BuildContext, PatientViewModel)\n  -_buildContent(BuildContext, PatientViewModel)\n  -_showPatientForm(BuildContext, PatientViewModel)\n  -_showDeleteConfirmation(BuildContext, PatientViewModel, String)\n  +viewModelBuilder(BuildContext)\n  +onViewModelReady(PatientViewModel)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "builder",
+          "description": "Constructs the main UI for patient management, including app bar, patient list, and floating action button",
+          "parameters": [
+            "BuildContext",
+            "PatientViewModel"
+          ],
+          "return_type": "Widget"
+        },
+        {
+          "name": "_buildContent",
+          "description": "Renders patient list or appropriate empty/error states based on view model data",
+          "parameters": [
+            "BuildContext",
+            "PatientViewModel"
+          ],
+          "return_type": "Widget"
+        },
+        {
+          "name": "_showPatientForm",
+          "description": "Displays a bottom sheet modal for creating or editing patient records",
+          "parameters": [
+            "BuildContext",
+            "PatientViewModel",
+            "patient (optional)"
+          ],
+          "return_type": "void"
+        },
+        {
+          "name": "_showDeleteConfirmation",
+          "description": "Presents a confirmation dialog for patient record deletion",
+          "parameters": [
+            "BuildContext",
+            "PatientViewModel",
+            "String patientId"
+          ],
+          "return_type": "void"
+        }
+      ],
+      "dependencies": [
+        "package:flutter/material.dart",
+        "package:stacked/stacked.dart",
+        "patient_viewmodel.dart",
+        "widgets/patient_form.dart",
+        "widgets/patient_list_item.dart"
+      ]
+    },
+    {
+      "name": "lib/features/patient/patient_viewmodel.dart",
+      "description": "A ViewModel for managing patient data in a medical application, providing comprehensive CRUD operations and state management for patient records using the MVVM architectural pattern",
+      "class_diagram": "@startuml\nclass PatientViewModel {\n  - _patientService: PatientService\n  - _patients: List<Patient>\n  - _selectedPatient: Patient\n  + loadPatients()\n  + selectPatient(id: String)\n  + createPatient(patient: Patient)\n  + updatePatient(patient: Patient)\n  + deletePatient(id: String)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "initialize",
+          "description": "Initial method to load all patient records on view model startup",
+          "parameters": null,
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "loadPatients",
+          "description": "Retrieves all patient records from the patient service and updates the view model state",
+          "parameters": null,
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "selectPatient",
+          "description": "Selects a specific patient by their ID and sets it as the current patient in the view model",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "createPatient",
+          "description": "Creates a new patient record and refreshes the patient list",
+          "parameters": [
+            "patient"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "updatePatient",
+          "description": "Updates an existing patient record and refreshes the patient list",
+          "parameters": [
+            "patient"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "deletePatient",
+          "description": "Deletes a patient record by ID and refreshes the patient list",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<void>"
+        }
+      ],
+      "dependencies": [
+        "package:stacked/stacked.dart",
+        "package:my_app/app/app.locator.dart",
+        "package:my_app/models/patient.dart",
+        "package:my_app/services/patient_service.dart"
+      ]
+    },
+    {
+      "name": "lib/features/patient/widgets/patient_form.dart",
+      "description": "A comprehensive patient data entry and editing form widget that allows users to create or modify patient records with validation and dynamic input handling",
+      "class_diagram": "@startuml\nclass PatientForm {\n  +patient: Patient\n  +onSubmit: Function\n  -_submitForm(): void\n  -_selectDate(context): void\n}\nclass _PatientFormState {\n  -_formKey: GlobalKey\n  -_nameController: TextEditingController\n  -_submitForm(): void\n}\n@enduml",
+      "methods": [
+        {
+          "name": "_submitForm",
+          "description": "Validates form inputs and creates/updates a Patient object when all data is valid",
+          "parameters": null,
+          "return_type": "void"
+        },
+        {
+          "name": "_selectDate",
+          "description": "Opens a date picker for selecting patient's date of birth",
+          "parameters": [
+            "BuildContext"
+          ],
+          "return_type": "Future<void>"
+        }
+      ],
+      "dependencies": [
+        "flutter/material.dart",
+        "my_app/models/patient.dart",
+        "my_app/shared/app_colors.dart",
+        "my_app/shared/text_style.dart",
+        "my_app/shared/ui_helpers.dart",
+        "intl/intl.dart"
+      ]
+    },
+    {
+      "name": "lib/features/patient/widgets/patient_list_item.dart",
+      "description": "A reusable Flutter widget for displaying patient information in a list or grid, providing a compact and interactive card representation of patient details with edit and delete actions",
+      "class_diagram": "@startuml\nclass PatientListItem {\n  - Patient patient\n  - VoidCallback onTap\n  - VoidCallback onEdit\n  - VoidCallback onDelete\n  + Widget build(BuildContext context)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "build",
+          "description": "Renders a visually appealing and interactive patient information card with dynamic details and contextual actions",
+          "parameters": [
+            "BuildContext context"
+          ],
+          "return_type": "Widget"
+        }
+      ],
+      "dependencies": [
+        "package:flutter/material.dart",
+        "package:my_app/models/patient.dart",
+        "package:my_app/shared/app_colors.dart",
+        "package:my_app/shared/text_style.dart",
+        "package:my_app/shared/ui_helpers.dart",
+        "package:intl/intl.dart"
+      ]
+    },
+    {
+      "name": "lib/models/doctor.dart",
+      "description": "A data model representing a medical professional with comprehensive details, enabling structured management and serialization of doctor information across the application",
+      "class_diagram": "@startuml\nclass Doctor {\n  +id: String\n  +name: String\n  +specialization: String\n  +licenseNumber: String\n  +phoneNumber: String\n  +email: String\n  +dateRegistered: DateTime\n  +copyWith()\n  +toJson()\n  +fromJson()\n}\n@enduml",
+      "methods": [
+        {
+          "name": "copyWith",
+          "description": "Creates a new Doctor instance with optional field updates, enabling immutable state modifications",
+          "parameters": [
+            "id",
+            "name",
+            "specialization",
+            "licenseNumber",
+            "phoneNumber",
+            "email",
+            "dateRegistered"
+          ],
+          "return_type": "Doctor"
+        },
+        {
+          "name": "toJson",
+          "description": "Converts Doctor instance to a JSON-compatible map for data storage or transmission",
+          "parameters": null,
+          "return_type": "Map<String, dynamic>"
+        },
+        {
+          "name": "fromJson",
+          "description": "Factory constructor to create a Doctor instance from a JSON map, enabling deserialization",
+          "parameters": [
+            "json"
+          ],
+          "return_type": "Doctor"
+        }
+      ],
+      "dependencies": [
+        "package:equatable/equatable.dart"
+      ]
+    },
+    {
+      "name": "lib/features/doctor/widgets/doctor_form.dart",
+      "description": "A Flutter widget that provides a dynamic form for creating or editing doctor profiles, enabling users to input and validate comprehensive doctor information with robust form management",
+      "class_diagram": "@startuml\nclass DoctorForm {\n  -Doctor? doctor\n  -Function(Doctor) onSubmit\n  +createState()\n}\nclass _DoctorFormState {\n  -GlobalKey<FormState> _formKey\n  -TextEditingController _nameController\n  +_submitForm()\n  +build()\n}\n@enduml",
+      "methods": [
+        {
+          "name": "DoctorForm constructor",
+          "description": "Creates a form for adding or editing a doctor's profile, supporting both creation and modification scenarios",
+          "parameters": [
+            "doctor",
+            "onSubmit"
+          ],
+          "return_type": null
+        },
+        {
+          "name": "_submitForm",
+          "description": "Validates form inputs, creates a Doctor object, calls the submission callback, and closes the form",
+          "parameters": null,
+          "return_type": null
+        },
+        {
+          "name": "build",
+          "description": "Renders the doctor information input form with validation and dynamic title based on context",
+          "parameters": [
+            "context"
+          ],
+          "return_type": "Widget"
+        }
+      ],
+      "dependencies": [
+        "flutter/material.dart",
+        "models/doctor.dart",
+        "shared/app_colors.dart",
+        "shared/text_style.dart",
+        "shared/ui_helpers.dart"
+      ]
+    },
+    {
+      "name": "lib/models/medical_record.dart",
+      "description": "A data model representing a comprehensive medical record in a healthcare management system, enabling structured storage and transportation of patient medical information across the application.",
+      "class_diagram": "@startuml\nclass MedicalRecord {\n  +String id\n  +String patientId\n  +String doctorId\n  +DateTime dateTime\n  +String diagnosis\n  +String treatment\n  +String prescription\n  +String notes\n  +List<String> attachments\n  +copyWith()\n  +toJson()\n  +fromJson()\n}\n@enduml",
+      "methods": [
+        {
+          "name": "copyWith",
+          "description": "Creates a new MedicalRecord instance with selective field updates, enabling immutable state modifications",
+          "parameters": [
+            "optional updated fields"
+          ],
+          "return_type": "MedicalRecord"
+        },
+        {
+          "name": "toJson",
+          "description": "Converts MedicalRecord instance into a JSON-compatible map for data serialization",
+          "parameters": null,
+          "return_type": "Map<String, dynamic>"
+        },
+        {
+          "name": "fromJson",
+          "description": "Creates a MedicalRecord instance from a JSON map, enabling deserialization of medical record data",
+          "parameters": [
+            "Map<String, dynamic>"
+          ],
+          "return_type": "MedicalRecord"
+        }
+      ],
+      "dependencies": [
+        "package:equatable/equatable.dart"
+      ]
+    },
+    {
+      "name": "lib/models/patient.dart",
+      "description": "Defines a Patient data model for healthcare applications, representing comprehensive patient information with serialization and immutability capabilities",
+      "class_diagram": "@startuml\nclass Patient {\n  +String id\n  +String name\n  +DateTime dateOfBirth\n  +String gender\n  +String bloodType\n  +String address\n  +String phoneNumber\n  +String emergencyContact\n  +DateTime registrationDate\n\n  +copyWith()\n  +toJson()\n  +fromJson()\n}\n@enduml",
+      "methods": [
+        {
+          "name": "copyWith",
+          "description": "Creates a new Patient instance with optional field updates, enabling immutable state modifications",
+          "parameters": [
+            "Various optional parameters"
+          ],
+          "return_type": "Patient"
+        },
+        {
+          "name": "toJson",
+          "description": "Converts Patient object to a JSON-compatible map for data persistence and transmission",
+          "parameters": null,
+          "return_type": "Map<String, dynamic>"
+        },
+        {
+          "name": "fromJson",
+          "description": "Reconstructs a Patient object from a JSON map, supporting data deserialization",
+          "parameters": [
+            "Map<String, dynamic> json"
+          ],
+          "return_type": "Patient"
+        }
+      ],
+      "dependencies": [
+        "package:equatable/equatable.dart"
+      ]
+    },
+    {
+      "name": "lib/services/doctor_service.dart",
+      "description": "A service layer that provides CRUD operations for managing doctor records in the application, abstracting data access and providing consistent error handling for doctor-related interactions",
+      "class_diagram": "@startuml\nclass DoctorService {\n  - _repository: DoctorRepository\n  + getAllDoctors(): List<Doctor>\n  + getDoctorById(id: String): Doctor\n  + createDoctor(doctor: Doctor): void\n  + updateDoctor(doctor: Doctor): void\n  + deleteDoctor(id: String): void\n}\nDoctorService --> DoctorRepository: depends on\n@enduml",
+      "methods": [
+        {
+          "name": "getAllDoctors",
+          "description": "Retrieves a complete list of doctors from the repository",
+          "parameters": null,
+          "return_type": "Future<List<Doctor>>"
+        },
+        {
+          "name": "getDoctorById",
+          "description": "Finds and returns a specific doctor by their unique identifier",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<Doctor>"
+        },
+        {
+          "name": "createDoctor",
+          "description": "Adds a new doctor record to the system",
+          "parameters": [
+            "doctor"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "updateDoctor",
+          "description": "Modifies an existing doctor's information",
+          "parameters": [
+            "doctor"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "deleteDoctor",
+          "description": "Removes a doctor record from the system by their identifier",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<void>"
+        }
+      ],
+      "dependencies": [
+        "my_app/features/doctor/doctor_repository.dart",
+        "my_app/models/doctor.dart",
+        "stacked/stacked_annotations.dart"
+      ]
+    },
+    {
+      "name": "lib/services/patient_service.dart",
+      "description": "Patient Service responsible for managing patient data operations, providing a clean abstraction layer between the UI and data repository with centralized error handling and business logic for patient-related interactions",
+      "class_diagram": "@startuml\nclass PatientService {\n  -PatientRepository _repository\n  +getAllPatients(): List<Patient>\n  +getPatientById(id: String): Patient\n  +createPatient(patient: Patient): void\n  +updatePatient(patient: Patient): void\n  +deletePatient(id: String): void\n}\nclass PatientRepository\nPatientService --> PatientRepository : depends on\n@enduml",
+      "methods": [
+        {
+          "name": "getAllPatients",
+          "description": "Retrieves a list of all patients from the repository",
+          "parameters": null,
+          "return_type": "Future<List<Patient>>"
+        },
+        {
+          "name": "getPatientById",
+          "description": "Fetches a specific patient record by unique identifier",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<Patient>"
+        },
+        {
+          "name": "createPatient",
+          "description": "Creates a new patient record in the system",
+          "parameters": [
+            "patient"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "updatePatient",
+          "description": "Updates an existing patient record",
+          "parameters": [
+            "patient"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "deletePatient",
+          "description": "Removes a patient record from the system",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<void>"
+        }
+      ],
+      "dependencies": [
+        "package:my_app/features/patient/patient_repository.dart",
+        "package:my_app/models/patient.dart",
+        "package:stacked/stacked_annotations.dart"
+      ]
+    },
+    {
+      "name": "lib/features/doctor/doctor_viewmodel.dart",
+      "description": "A ViewModel for managing doctor-related operations in a medical application, handling doctor data retrieval, selection, creation, updating, and deletion through a service layer.",
+      "class_diagram": "@startuml\nclass DoctorViewModel {\n  - _doctorService: DoctorService\n  - _doctors: List<Doctor>\n  - _selectedDoctor: Doctor\n  + loadDoctors()\n  + selectDoctor(id: String)\n  + createDoctor(doctor: Doctor)\n  + updateDoctor(doctor: Doctor)\n  + deleteDoctor(id: String)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "initialize",
+          "description": "Initial method to load all doctors when the view model is first created",
+          "parameters": null,
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "loadDoctors",
+          "description": "Retrieves the complete list of doctors from the doctor service",
+          "parameters": null,
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "selectDoctor",
+          "description": "Selects a specific doctor by their unique identifier",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "createDoctor",
+          "description": "Creates a new doctor record in the system",
+          "parameters": [
+            "doctor"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "updateDoctor",
+          "description": "Updates an existing doctor's information",
+          "parameters": [
+            "doctor"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "deleteDoctor",
+          "description": "Removes a doctor from the system by their unique identifier",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<void>"
+        }
+      ],
+      "dependencies": [
+        "stacked/stacked.dart",
+        "my_app/app/app.locator.dart",
+        "my_app/models/doctor.dart",
+        "my_app/services/doctor_service.dart"
+      ]
+    },
+    {
+      "name": "lib/features/doctor/doctor_view.dart",
+      "description": "A Flutter view for managing doctors in a medical application, providing a user interface for listing, creating, editing, and deleting doctor records with robust state management",
+      "class_diagram": "@startuml\nclass DoctorView {\n  +builder(BuildContext, DoctorViewModel)\n  -_buildContent(BuildContext, DoctorViewModel)\n  -_showDoctorForm(BuildContext, DoctorViewModel)\n  -_showDeleteConfirmation(BuildContext, DoctorViewModel, String)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "builder",
+          "description": "Constructs the main UI for doctor management, including app bar, content list, and floating action button",
+          "parameters": [
+            "BuildContext",
+            "DoctorViewModel",
+            "Widget?"
+          ],
+          "return_type": "Widget"
+        },
+        {
+          "name": "_buildContent",
+          "description": "Renders the list of doctors or handles error/empty states",
+          "parameters": [
+            "BuildContext",
+            "DoctorViewModel"
+          ],
+          "return_type": "Widget"
+        },
+        {
+          "name": "_showDoctorForm",
+          "description": "Displays a modal bottom sheet for creating or editing a doctor's information",
+          "parameters": [
+            "BuildContext",
+            "DoctorViewModel",
+            "doctor?"
+          ],
+          "return_type": "void"
+        },
+        {
+          "name": "_showDeleteConfirmation",
+          "description": "Shows a confirmation dialog before deleting a doctor record",
+          "parameters": [
+            "BuildContext",
+            "DoctorViewModel",
+            "String"
+          ],
+          "return_type": "void"
+        }
+      ],
+      "dependencies": [
+        "package:flutter/material.dart",
+        "package:stacked/stacked.dart",
+        "doctor_viewmodel.dart",
+        "widgets/doctor_form.dart",
+        "widgets/doctor_list_item.dart"
+      ]
+    },
+    {
+      "name": "lib/services/medical_record_service.dart",
+      "description": "A service layer for managing medical records in a healthcare application, providing a centralized interface for performing CRUD operations on patient medical records while abstracting repository interactions",
+      "class_diagram": "@startuml\nclass MedicalRecordService {\n  -MedicalRecordRepository _repository\n  +getAllMedicalRecords()\n  +getMedicalRecordsForPatient(patientId)\n  +getMedicalRecordById(id)\n  +createMedicalRecord(record)\n  +updateMedicalRecord(record)\n  +deleteMedicalRecord(id)\n}\nclass MedicalRecordRepository\nMedicalRecordService --> MedicalRecordRepository : depends on\n@enduml",
+      "methods": [
+        {
+          "name": "getAllMedicalRecords",
+          "description": "Retrieves all medical records in the system",
+          "parameters": null,
+          "return_type": "Future<List<MedicalRecord>>"
+        },
+        {
+          "name": "getMedicalRecordsForPatient",
+          "description": "Retrieves medical records specific to a patient",
+          "parameters": [
+            "patientId"
+          ],
+          "return_type": "Future<List<MedicalRecord>>"
+        },
+        {
+          "name": "createMedicalRecord",
+          "description": "Creates a new medical record in the system",
+          "parameters": [
+            "record"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "updateMedicalRecord",
+          "description": "Updates an existing medical record",
+          "parameters": [
+            "record"
+          ],
+          "return_type": "Future<void>"
+        },
+        {
+          "name": "deleteMedicalRecord",
+          "description": "Deletes a medical record by its unique identifier",
+          "parameters": [
+            "id"
+          ],
+          "return_type": "Future<void>"
+        }
+      ],
+      "dependencies": [
+        "my_app/features/medical_record/medical_record_repository.dart",
+        "my_app/models/medical_record.dart",
+        "stacked/stacked_annotations.dart"
+      ]
     }
   ],
   "dependencies": [
@@ -659,7 +1569,7 @@
       "purpose": "Creating gaps in layouts"
     }
   ],
-  "sequence_diagram": "@startuml\nactor User\nparticipant AppView\nparticipant StartupView\nparticipant StartupViewModel\nparticipant HomeView\nparticipant HomeViewModel\nparticipant DialogService\nparticipant BottomSheetService\n\nUser -> AppView: Launch App\nAppView -> StartupView: Initialize\nStartupView -> StartupViewModel: Execute Startup Logic\nStartupViewModel -> HomeView: Navigate\nUser -> HomeView: Interact\nUser -> HomeViewModel: Increment Counter\nHomeViewModel -> HomeView: Update UI\nUser -> HomeViewModel: Show Dialog\nHomeViewModel -> DialogService: Display InfoAlertDialog\nUser -> HomeViewModel: Show Bottom Sheet\nHomeViewModel -> BottomSheetService: Display NoticeSheet\n@enduml",
-  "state_management_flow": "State management is implemented using Stacked's reactive ViewModels, enabling automatic UI updates through reactive programming. ViewModels like HomeViewModel inherit from BaseViewModel, which tracks and notifies listeners of state changes. Each ViewModel encapsulates its own state logic, with methods that trigger UI rebuilds when internal state is modified. Dependency injection via GetIt ensures services are globally accessible and centrally managed.",
-  "navigation_flow": "Navigation is centralized through the Stacked router, with predefined routes for StartupView and HomeView. The StartupViewModel manages initial navigation logic, automatically transitioning to HomeView after initialization. Routing methods such as navigateToHomeView and replaceWithHomeView provide flexible screen transitions with support for optional parameters and custom transition animations, ensuring a smooth and programmatic navigation experience."
+  "sequence_diagram": "@startuml\nactor User\nparticipant AppView\nparticipant PatientView\nparticipant PatientViewModel\nparticipant PatientService\nparticipant PatientRepository\n\nUser -> AppView: Launch App\nAppView -> PatientView: Navigate\nUser -> PatientView: List Patients\nPatientView -> PatientViewModel: Load Patients\nPatientViewModel -> PatientService: Get All Patients\nPatientService -> PatientRepository: Retrieve Patient Records\nPatientRepository --> PatientService: Return Patients\nPatientService --> PatientViewModel: Provide Patient List\nPatientViewModel --> PatientView: Update UI\n\nUser -> PatientView: Create New Patient\nUser -> PatientView: Show Patient Form\nPatientView -> PatientViewModel: Create Patient\nPatientViewModel -> PatientService: Add Patient\nPatientService -> PatientRepository: Save Patient\nPatientRepository --> PatientService: Confirm Save\nPatientService --> PatientViewModel: Confirm Creation\nPatientViewModel --> PatientView: Refresh Patient List\n@enduml",
+  "state_management_flow": "State management is implemented using Stacked's reactive ViewModels with a consistent pattern across different domain models. Each ViewModel (PatientViewModel, DoctorViewModel, MedicalRecordViewModel) extends BaseViewModel and manages its own state. State updates automatically trigger UI rebuilds through reactive programming. ViewModels interact with services to perform data operations, maintaining a clean separation between UI, business logic, and data access layers.",
+  "navigation_flow": "Navigation is centralized through Stacked's generated router, supporting programmatic and declarative routing. Routes are defined for key views like PatientView, DoctorView, and MedicalRecordView. Navigation methods such as navigateTo and replaceWith provide flexible screen transitions with support for optional parameters. The app ensures smooth transitions between different sections, with each view having its own ViewModel managing navigation-related logic."
 }
