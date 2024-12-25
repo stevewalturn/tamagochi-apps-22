@@ -1,7 +1,7 @@
 {
   "package_name": "com.walturn.my_app",
-  "project_description": "A Flutter application leveraging Stacked architecture to create a modular, maintainable mobile experience. The app features a startup screen for initialization, a home screen with a counter mechanism, and integrated dialog and bottom sheet components. Key functionalities include localization support, multi-flavor configuration (development and production), and basic state management demonstrating core interaction patterns.",
-  "architecture_overview": "Built using the Stacked MVVM architecture, the application separates concerns through dedicated ViewModels for each view. Dependency injection is managed via app.locator.dart, while routing is handled through app.router.dart. The app utilizes Stacked services for navigation, dialogs, and bottom sheets, ensuring a clean, decoupled design with clear separation between UI and business logic.",
+  "project_description": "A compact Flutter mobile application demonstrating modular architecture and core mobile development patterns. The app features a startup initialization screen, a home screen with a counter mechanism, and integrated UI components like dialogs and bottom sheets. Key characteristics include localization support, multi-flavor configuration for development and production environments, and a streamlined state management approach showcasing reactive programming principles.",
+  "architecture_overview": "Implemented using the Stacked MVVM architecture, the application enforces a clean separation of concerns through dedicated ViewModels for each view. Dependency injection is managed centrally via GetIt, while routing is handled through a generated router file. The app leverages Stacked services for navigation, dialogs, and bottom sheets, ensuring a decoupled design with clear boundaries between UI rendering and business logic.",
   "files": [
     {
       "name": "lib/app/app.dart",
@@ -221,91 +221,6 @@
       ]
     },
     {
-      "name": "lib/ui/common/app_colors.dart",
-      "description": "This Dart file defines a set of reusable color constants that represent the primary color palette of the application. These colors are used throughout the UI to ensure a consistent and branded visual experience.",
-      "class_diagram": "",
-      "methods": [],
-      "dependencies": [
-        "package:flutter/material.dart"
-      ]
-    },
-    {
-      "name": "lib/ui/common/ui_helpers.dart",
-      "description": "This Dart file provides a collection of common UI helper functions and constants that are used throughout the Flutter application's user interface. It serves as a centralized location for managing and accessing various UI-related utilities, ensuring consistency and reusability across the codebase.",
-      "class_diagram": "@startuml\nclass UIHelpers {\n  + const horizontalSpaceTiny: Widget\n  + const horizontalSpaceSmall: Widget\n  + const horizontalSpaceMedium: Widget\n  + const horizontalSpaceLarge: Widget\n  + const verticalSpaceTiny: Widget\n  + const verticalSpaceSmall: Widget\n  + const verticalSpaceMedium: Widget\n  + const verticalSpaceLarge: Widget\n  + const verticalSpaceMassive: Widget\n  + const spacedDivider: Widget\n  + verticalSpace(height: double): Widget\n  + screenWidth(context: BuildContext): double\n  + screenHeight(context: BuildContext): double\n  + screenHeightFraction(context: BuildContext, dividedBy: int, offsetBy: double, max: double): double\n  + screenWidthFraction(context: BuildContext, dividedBy: int, offsetBy: double, max: double): double\n  + halfScreenWidth(context: BuildContext): double\n  + thirdScreenWidth(context: BuildContext): double\n  + quarterScreenWidth(context: BuildContext): double\n  + getResponsiveHorizontalSpaceMedium(context: BuildContext): double\n  + getResponsiveSmallFontSize(context: BuildContext): double\n  + getResponsiveMediumFontSize(context: BuildContext): double\n  + getResponsiveLargeFontSize(context: BuildContext): double\n  + getResponsiveExtraLargeFontSize(context: BuildContext): double\n  + getResponsiveMassiveFontSize(context: BuildContext): double\n  + getResponsiveFontSize(context: BuildContext, fontSize: double, max: double): double\n}\n@enduml",
-      "methods": [
-        {
-          "name": "horizontalSpaceTiny",
-          "description": "A constant Widget that provides a tiny horizontal space.",
-          "parameters": null,
-          "return_type": "Widget"
-        },
-        {
-          "name": "verticalSpace",
-          "description": "A function that creates a Widget with a specified vertical space.",
-          "parameters": [
-            "height"
-          ],
-          "return_type": "Widget"
-        },
-        {
-          "name": "screenWidth",
-          "description": "A function that returns the width of the screen.",
-          "parameters": [
-            "context"
-          ],
-          "return_type": "double"
-        },
-        {
-          "name": "getResponsiveFontSize",
-          "description": "A function that calculates a responsive font size based on the screen width.",
-          "parameters": [
-            "context",
-            "fontSize",
-            "max"
-          ],
-          "return_type": "double"
-        }
-      ],
-      "dependencies": [
-        "dart:math",
-        "package:flutter/material.dart"
-      ]
-    },
-    {
-      "name": "lib/ui/dialogs/info_alert/info_alert_dialog.dart",
-      "description": "This file defines an InfoAlertDialog class, which is responsible for displaying an informative alert dialog with a title, description, and a confirmation button. The primary purpose of this class is to provide a reusable and customizable way to present important information to the user within the application.",
-      "class_diagram": "@startuml\nclass InfoAlertDialog {\n  -DialogRequest request\n  -Function(DialogResponse) completer\n  +builder(BuildContext, InfoAlertDialogModel, Widget?): Widget\n  +viewModelBuilder(BuildContext): InfoAlertDialogModel\n}\n\nclass InfoAlertDialogModel {\n}\n\nInfoAlertDialog *-- InfoAlertDialogModel\n@enduml",
-      "methods": [
-        {
-          "name": "builder",
-          "description": "The main build method that constructs the UI for the InfoAlertDialog. It takes the DialogRequest, DialogResponse completer, and the view model as input and returns the final widget.",
-          "parameters": [
-            "BuildContext",
-            "InfoAlertDialogModel",
-            "Widget?"
-          ],
-          "return_type": "Widget"
-        },
-        {
-          "name": "viewModelBuilder",
-          "description": "A method that creates and returns an instance of the InfoAlertDialogModel, which is used to manage the state and logic of the dialog.",
-          "parameters": [
-            "BuildContext"
-          ],
-          "return_type": "InfoAlertDialogModel"
-        }
-      ],
-      "dependencies": [
-        "package:flutter/material.dart",
-        "package:my_app/ui/common/app_colors.dart",
-        "package:my_app/ui/common/ui_helpers.dart",
-        "package:my_app/ui/dialogs/info_alert/info_alert_dialog_model.dart",
-        "package:stacked/stacked.dart",
-        "package:stacked_services/stacked_services.dart"
-      ]
-    },
-    {
       "name": "lib/app/app.locator.dart",
       "description": "This file is responsible for setting up and managing the service locator in a Flutter application built using the Stacked architecture pattern. The service locator is a crucial component that allows different parts of the application to access and interact with various services and dependencies, promoting a modular and decoupled design.",
       "class_diagram": "",
@@ -402,42 +317,6 @@
         "package:my_app/l10n/supported_locales.dart",
         "package:my_app/ui/common/app_colors.dart",
         "package:stacked_services/stacked_services.dart"
-      ]
-    },
-    {
-      "name": "lib/ui/common/text_style.dart",
-      "description": "A centralized text styling utility that provides responsive, consistent typography across the application, ensuring design uniformity and adaptability to different screen sizes",
-      "class_diagram": "@startuml\nclass TextStyles {\n  +heading1Style(BuildContext)\n  +heading2Style(BuildContext)\n  +heading3Style(BuildContext)\n  +bodyStyle(BuildContext)\n  +subtitleStyle(BuildContext)\n  +buttonTextStyle(BuildContext)\n  +captionStyle(BuildContext)\n}\n@enduml",
-      "methods": [
-        {
-          "name": "heading1Style",
-          "description": "Creates a large, bold primary text style for main headings with responsive sizing",
-          "parameters": [
-            "BuildContext"
-          ],
-          "return_type": "TextStyle"
-        },
-        {
-          "name": "bodyStyle",
-          "description": "Generates a medium-sized, standard text style for primary body content",
-          "parameters": [
-            "BuildContext"
-          ],
-          "return_type": "TextStyle"
-        },
-        {
-          "name": "buttonTextStyle",
-          "description": "Defines a consistent text style for buttons with bold, white text",
-          "parameters": [
-            "BuildContext"
-          ],
-          "return_type": "TextStyle"
-        }
-      ],
-      "dependencies": [
-        "flutter/material.dart",
-        "my_app/ui/common/app_colors.dart",
-        "my_app/ui/common/ui_helpers.dart"
       ]
     },
     {
@@ -543,27 +422,6 @@
       ]
     },
     {
-      "name": "lib/shared/ui/bottom_sheets/notice_sheet.dart",
-      "description": "A reusable UI component for displaying informational bottom sheets with a title and description, designed to provide consistent user notifications across the application",
-      "class_diagram": "@startuml\nclass NoticeSheet {\n  +completer: Function(SheetResponse)\n  +request: SheetRequest\n  +build(BuildContext): Widget\n}\n@enduml",
-      "methods": [
-        {
-          "name": "build",
-          "description": "Constructs the visual representation of the notice bottom sheet with title and description",
-          "parameters": [
-            "BuildContext context"
-          ],
-          "return_type": "Widget"
-        }
-      ],
-      "dependencies": [
-        "package:flutter/material.dart",
-        "package:stacked_services/stacked_services.dart",
-        "my_app/ui/common/app_colors.dart",
-        "my_app/ui/common/ui_helpers.dart"
-      ]
-    },
-    {
       "name": "lib/features/app/app_viewmodel.dart",
       "description": "A base view model for the application using the Stacked MVVM architecture, designed to provide a foundational structure for managing application-wide state and view logic",
       "class_diagram": "@startuml\nclass AppViewModel {\n}\n@enduml",
@@ -611,6 +469,172 @@
         "package:my_app/ui/common/text_style.dart",
         "package:my_app/ui/common/ui_helpers.dart"
       ]
+    },
+    {
+      "name": "lib/shared/app_colors.dart",
+      "description": "A centralized color configuration file that defines a consistent color palette for the application's UI, ensuring design uniformity and ease of theme management across different components and screens",
+      "class_diagram": "@startuml\nclass AppColors {\n  {field} +kcPrimaryColor: Color\n  {field} +kcPrimaryColorDark: Color\n  {field} +kcBackgroundColor: Color\n  {field} +kcPrimaryTextColor: Color\n}\n@enduml",
+      "methods": [
+        {
+          "name": "Color Constants",
+          "description": "Defines a comprehensive set of color constants for application-wide theming and UI consistency",
+          "parameters": null,
+          "return_type": null
+        }
+      ],
+      "dependencies": [
+        "flutter/material.dart"
+      ]
+    },
+    {
+      "name": "lib/shared/info_alert_dialog.dart",
+      "description": "A reusable, configurable information alert dialog widget that provides a standardized way to display informative messages to users with a consistent design and interaction pattern",
+      "class_diagram": "@startuml\nclass InfoAlertDialog {\n  +DialogRequest request\n  +Function(DialogResponse) completer\n  +Widget build(BuildContext)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "build",
+          "description": "Constructs the visual layout and interaction logic for the information dialog",
+          "parameters": [
+            "BuildContext"
+          ],
+          "return_type": "Widget"
+        }
+      ],
+      "dependencies": [
+        "flutter/material.dart",
+        "my_app/shared/app_colors.dart",
+        "my_app/shared/ui_helpers.dart",
+        "stacked_services/stacked_services.dart"
+      ]
+    },
+    {
+      "name": "lib/shared/notice_sheet.dart",
+      "description": "A reusable bottom sheet widget for displaying informational notices or alerts in the application, providing a standardized UI component for presenting user-relevant messages with a title and description",
+      "class_diagram": "@startuml\nclass NoticeSheet {\n  - completer: Function(SheetResponse)\n  - request: SheetRequest\n  + build(context: BuildContext): Widget\n}\n@enduml",
+      "methods": [
+        {
+          "name": "build",
+          "description": "Constructs the visual representation of the notice sheet with a styled title and description",
+          "parameters": [
+            "BuildContext context"
+          ],
+          "return_type": "Widget"
+        }
+      ],
+      "dependencies": [
+        "flutter/material.dart",
+        "my_app/shared/app_colors.dart",
+        "my_app/shared/ui_helpers.dart",
+        "stacked_services/stacked_services.dart"
+      ]
+    },
+    {
+      "name": "lib/shared/ui_helpers.dart",
+      "description": "A utility file providing responsive design and consistent spacing methods for Flutter applications, solving the challenge of creating flexible, adaptive user interfaces across different device sizes and screen dimensions.",
+      "class_diagram": "@startuml\nclass UIHelpers {\n  +horizontalSpaceTiny\n  +verticalSpaceLarge\n  +screenWidth(context)\n  +screenHeightFraction(context)\n  +getResponsiveFontSize(context)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "screenWidth",
+          "description": "Retrieves the total screen width for the current device context",
+          "parameters": [
+            "BuildContext context"
+          ],
+          "return_type": "double"
+        },
+        {
+          "name": "screenHeightFraction",
+          "description": "Calculates a proportional screen height based on specified divisors and offset",
+          "parameters": [
+            "BuildContext context",
+            "dividedBy",
+            "offsetBy",
+            "max"
+          ],
+          "return_type": "double"
+        },
+        {
+          "name": "getResponsiveFontSize",
+          "description": "Dynamically calculates font size based on screen width, ensuring readability across devices",
+          "parameters": [
+            "BuildContext context",
+            "fontSize",
+            "max"
+          ],
+          "return_type": "double"
+        }
+      ],
+      "dependencies": [
+        "dart:math",
+        "package:flutter/material.dart"
+      ]
+    },
+    {
+      "name": "lib/shared/text_style.dart",
+      "description": "A centralized typography management utility that provides responsive, consistent text styles across the application, ensuring uniform design language and adaptable font sizing",
+      "class_diagram": "@startuml\nclass TextStyles {\n  +heading1Style(BuildContext)\n  +heading2Style(BuildContext)\n  +heading3Style(BuildContext)\n  +bodyStyle(BuildContext)\n  +subtitleStyle(BuildContext)\n  +buttonTextStyle(BuildContext)\n  +captionStyle(BuildContext)\n}\n@enduml",
+      "methods": [
+        {
+          "name": "heading1Style",
+          "description": "Creates a large, bold primary text style for top-level headings with responsive sizing",
+          "parameters": [
+            "BuildContext"
+          ],
+          "return_type": "TextStyle"
+        },
+        {
+          "name": "heading2Style",
+          "description": "Creates a medium-large, bold primary text style for section headings with responsive sizing",
+          "parameters": [
+            "BuildContext"
+          ],
+          "return_type": "TextStyle"
+        },
+        {
+          "name": "heading3Style",
+          "description": "Creates a medium, bold primary text style for subsection headings with responsive sizing",
+          "parameters": [
+            "BuildContext"
+          ],
+          "return_type": "TextStyle"
+        },
+        {
+          "name": "bodyStyle",
+          "description": "Creates a standard medium-sized text style for primary content with responsive sizing",
+          "parameters": [
+            "BuildContext"
+          ],
+          "return_type": "TextStyle"
+        },
+        {
+          "name": "subtitleStyle",
+          "description": "Creates a smaller, secondary text style for supplementary information with responsive sizing",
+          "parameters": [
+            "BuildContext"
+          ],
+          "return_type": "TextStyle"
+        },
+        {
+          "name": "buttonTextStyle",
+          "description": "Creates a medium, bold white text style specifically designed for button labels with responsive sizing",
+          "parameters": [
+            "BuildContext"
+          ],
+          "return_type": "TextStyle"
+        },
+        {
+          "name": "captionStyle",
+          "description": "Creates a small, secondary text style for minor textual annotations with responsive sizing",
+          "parameters": [
+            "BuildContext"
+          ],
+          "return_type": "TextStyle"
+        }
+      ],
+      "dependencies": [
+        "flutter/material.dart",
+        "my_app/shared/app_colors.dart",
+        "my_app/shared/ui_helpers.dart"
+      ]
     }
   ],
   "dependencies": [
@@ -636,6 +660,6 @@
     }
   ],
   "sequence_diagram": "@startuml\nactor User\nparticipant AppView\nparticipant StartupView\nparticipant StartupViewModel\nparticipant HomeView\nparticipant HomeViewModel\nparticipant DialogService\nparticipant BottomSheetService\n\nUser -> AppView: Launch App\nAppView -> StartupView: Initialize\nStartupView -> StartupViewModel: Execute Startup Logic\nStartupViewModel -> HomeView: Navigate\nUser -> HomeView: Interact\nUser -> HomeViewModel: Increment Counter\nHomeViewModel -> HomeView: Update UI\nUser -> HomeViewModel: Show Dialog\nHomeViewModel -> DialogService: Display InfoAlertDialog\nUser -> HomeViewModel: Show Bottom Sheet\nHomeViewModel -> BottomSheetService: Display NoticeSheet\n@enduml",
-  "state_management_flow": "State management is implemented using the Stacked framework's reactive approach. ViewModels like HomeViewModel inherit from BaseViewModel, allowing automatic UI updates through reactive programming. Each ViewModel manages its own state, with methods like incrementCounter triggering UI rebuilds. Dependency injection via GetIt ensures services are centrally managed and easily accessible across the application.",
-  "navigation_flow": "Navigation is centralized through the Stacked router (app.router.dart), with predefined routes for StartupView and HomeView. The StartupViewModel handles initial navigation logic, automatically transitioning to the HomeView after initialization. Additional navigation methods like navigateToHomeView and replaceWithHomeView provide flexible routing options, supporting programmatic screen transitions with optional parameters and transition animations."
+  "state_management_flow": "State management is implemented using Stacked's reactive ViewModels, enabling automatic UI updates through reactive programming. ViewModels like HomeViewModel inherit from BaseViewModel, which tracks and notifies listeners of state changes. Each ViewModel encapsulates its own state logic, with methods that trigger UI rebuilds when internal state is modified. Dependency injection via GetIt ensures services are globally accessible and centrally managed.",
+  "navigation_flow": "Navigation is centralized through the Stacked router, with predefined routes for StartupView and HomeView. The StartupViewModel manages initial navigation logic, automatically transitioning to HomeView after initialization. Routing methods such as navigateToHomeView and replaceWithHomeView provide flexible screen transitions with support for optional parameters and custom transition animations, ensuring a smooth and programmatic navigation experience."
 }
