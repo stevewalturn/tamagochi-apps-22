@@ -1,10 +1,10 @@
 import 'package:stacked/stacked.dart';
-import 'package:my_app/app/app.locator.dart';
-import 'package:my_app/models/doctor.dart';
 import 'package:my_app/services/doctor_service.dart';
+import 'package:my_app/models/doctor.dart';
+import 'package:get_it/get_it.dart';
 
 class DoctorViewModel extends BaseViewModel {
-  final _doctorService = locator<DoctorService>();
+  final _doctorService = GetIt.instance<DoctorService>();
   List<Doctor> _doctors = [];
   Doctor? _selectedDoctor;
 

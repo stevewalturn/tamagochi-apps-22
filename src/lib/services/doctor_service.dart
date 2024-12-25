@@ -1,12 +1,16 @@
 import 'package:my_app/features/doctor/doctor_repository.dart';
 import 'package:my_app/models/doctor.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'package:get_it/get_it.dart';
+
+final locator = GetIt.instance;
 
 class DoctorService implements InitializableDependency {
-  final DoctorRepository _repository;
+  final _repository = locator<DoctorRepository>();
 
-  DoctorService(this._repository);
-
+  DoctorService();
+  
   @override
   Future<void> init() async {
     // Initialize any required resources

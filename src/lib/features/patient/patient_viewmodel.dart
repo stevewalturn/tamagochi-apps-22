@@ -1,10 +1,10 @@
 import 'package:stacked/stacked.dart';
+import 'package:my_app/services/patient_service.dart' as patient_service;
 import 'package:my_app/app/app.locator.dart';
 import 'package:my_app/models/patient.dart';
-import 'package:my_app/services/patient_service.dart';
 
 class PatientViewModel extends BaseViewModel {
-  final _patientService = locator<PatientService>();
+  final _patientService = locator<patient_service.PatientService>();
   List<Patient> _patients = [];
   Patient? _selectedPatient;
 
@@ -21,7 +21,7 @@ class PatientViewModel extends BaseViewModel {
       _patients = await _patientService.getAllPatients();
       notifyListeners();
     } catch (e) {
-      setError(e.toString());
+      setError(e);
     } finally {
       setBusy(false);
     }
@@ -33,7 +33,7 @@ class PatientViewModel extends BaseViewModel {
       _selectedPatient = await _patientService.getPatientById(id);
       notifyListeners();
     } catch (e) {
-      setError(e.toString());
+      setError(e);
     } finally {
       setBusy(false);
     }
@@ -45,7 +45,7 @@ class PatientViewModel extends BaseViewModel {
       await _patientService.createPatient(patient);
       await loadPatients();
     } catch (e) {
-      setError(e.toString());
+      setError(e);
     } finally {
       setBusy(false);
     }
@@ -57,7 +57,7 @@ class PatientViewModel extends BaseViewModel {
       await _patientService.updatePatient(patient);
       await loadPatients();
     } catch (e) {
-      setError(e.toString());
+      setError(e);
     } finally {
       setBusy(false);
     }
@@ -69,7 +69,7 @@ class PatientViewModel extends BaseViewModel {
       await _patientService.deletePatient(id);
       await loadPatients();
     } catch (e) {
-      setError(e.toString());
+      setError(e);
     } finally {
       setBusy(false);
     }

@@ -1,10 +1,10 @@
 import 'package:stacked/stacked.dart';
+import 'package:my_app/services/medical_record_service.dart' as medical_record_service;
 import 'package:my_app/app/app.locator.dart';
 import 'package:my_app/models/medical_record.dart';
-import 'package:my_app/services/medical_record_service.dart';
 
 class MedicalRecordViewModel extends BaseViewModel {
-  final _medicalRecordService = locator<MedicalRecordService>();
+  final _medicalRecordService = locator<medical_record_service.MedicalRecordService>();
   List<MedicalRecord> _records = [];
   MedicalRecord? _selectedRecord;
   String? _currentPatientId;
@@ -20,15 +20,10 @@ class MedicalRecordViewModel extends BaseViewModel {
   Future<void> loadRecords() async {
     try {
       setBusy(true);
-      if (_currentPatientId != null) {
-        _records = await _medicalRecordService
-            .getMedicalRecordsForPatient(_currentPatientId!);
-      } else {
-        _records = await _medicalRecordService.getAllMedicalRecords();
-      }
+      _records = await _medicalRecordService.getMedicalRecordsForPatient(_currentPatientId!);
       notifyListeners();
     } catch (e) {
-      setError(e.toString());
+      setError(e);
     } finally {
       setBusy(false);
     }
@@ -40,9 +35,9 @@ class MedicalRecordViewModel extends BaseViewModel {
       _selectedRecord = await _medicalRecordService.getMedicalRecordById(id);
       notifyListeners();
     } catch (e) {
-      setError(e.toString());
+      setError(e);
     } finally {
-      setBusy(false);
+      setBusy(false); 
     }
   }
 
@@ -52,7 +47,7 @@ class MedicalRecordViewModel extends BaseViewModel {
       await _medicalRecordService.createMedicalRecord(record);
       await loadRecords();
     } catch (e) {
-      setError(e.toString());
+      setError(e);
     } finally {
       setBusy(false);
     }
@@ -64,7 +59,7 @@ class MedicalRecordViewModel extends BaseViewModel {
       await _medicalRecordService.updateMedicalRecord(record);
       await loadRecords();
     } catch (e) {
-      setError(e.toString());
+      setError(e);
     } finally {
       setBusy(false);
     }
@@ -76,7 +71,7 @@ class MedicalRecordViewModel extends BaseViewModel {
       await _medicalRecordService.deleteMedicalRecord(id);
       await loadRecords();
     } catch (e) {
-      setError(e.toString());
+      setError(e);
     } finally {
       setBusy(false);
     }

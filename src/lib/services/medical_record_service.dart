@@ -1,11 +1,15 @@
 import 'package:my_app/features/medical_record/medical_record_repository.dart';
 import 'package:my_app/models/medical_record.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'package:get_it/get_it.dart';
+
+final locator = GetIt.instance;
 
 class MedicalRecordService implements InitializableDependency {
-  final MedicalRecordRepository _repository;
+  final _repository = locator<MedicalRecordRepository>();
 
-  MedicalRecordService(this._repository);
+  MedicalRecordService();
 
   @override
   Future<void> init() async {
@@ -20,8 +24,7 @@ class MedicalRecordService implements InitializableDependency {
     }
   }
 
-  Future<List<MedicalRecord>> getMedicalRecordsForPatient(
-      String patientId) async {
+  Future<List<MedicalRecord>> getMedicalRecordsForPatient(String patientId) async {
     try {
       return await _repository.getMedicalRecordsForPatient(patientId);
     } catch (e) {
